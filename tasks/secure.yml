@@ -6,3 +6,9 @@
   notify:
     - reload units
     - restart docker
+
+- name: expose port {{ docker_port }}
+  firewalld:
+    port: "{{ docker_port }}/tcp"
+    permanent: yes
+    state: enabled

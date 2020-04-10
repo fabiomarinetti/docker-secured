@@ -1,5 +1,9 @@
 ---
-# tasks file for fmarinetti.docker-secured
+# tasks file for docker_secured
+- name: install firewalld
+  package:
+     name: firewalld
+
 - name: deploy ssl configuration
   include: ssl.yml
 

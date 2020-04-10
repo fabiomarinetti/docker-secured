@@ -14,6 +14,8 @@
      dest: "{{ key_dir }}/{{ server_key_file }}"
      content: "{{ server_key }}"
   when: use_vault
+  notify:
+    - restart docker
 
 # deploy the server certificate from vault
 - name: deploy server cert from vault
@@ -21,6 +23,8 @@
      dest: "{{ cert_dir }}/{{ server_cert_file  }}"
      content: "{{ server_cert }}"
   when: use_vault
+  notify:
+    - restart docker
 
 # deploy the authority certificate from vault
 - name: deploy ca.crt from vault
@@ -28,6 +32,8 @@
      dest: "{{ cert_dir }}/{{ ca_cert_file  }}"
      content: "{{ ca_cert }}"
   when: use_vault
+  notify:
+    - restart docker
 
 # deploy certificates from files
 - name: "copy certificate {{ item }}"
@@ -38,6 +44,8 @@
     - ca.crt
     - server.crt
   when: not use_vault
+  notify:
+    - restart docker
 
 # deploy key from file
 - name: copy server key
@@ -45,3 +53,5 @@
     dest: "{{ key_dir }}/server.key"
     src: server.key
   when: not use_vault
+  notify:
+    - restart docker
