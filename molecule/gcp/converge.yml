@@ -2,7 +2,9 @@
 - name: Converge
   hosts: all
   become: yes
+  vars:
+    docker_port: "{{ molecule_yml.provisioner.vars.docker_port }}"
   tasks:
-    - name: "Include docker-secured"
+    - name: "Include docker_secured"
       include_role:
-        name: "fmarinetti.docker-secured"
+        name: "docker_secured"

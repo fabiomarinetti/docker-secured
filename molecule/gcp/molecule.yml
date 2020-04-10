@@ -20,38 +20,38 @@ dependency:
 driver:
   name: delegated
   gcp_service_account_key: ${GOOGLE_APPLICATION_CREDENTIALS}
-  gcp_project_id: ansible-272015
-  region: us-east1
-  zone: us-east1-c
+  gcp_project_id: ${GCP_PROJECT_ID}
+  region: ${GCP_REGION}
+  zone: ${GCP_ZONE}
   ssh_user: ${SSH_USER}
   ssh_pub_key_file: "${SSH_ID_FILE}.pub"
   ssh_key_file: "${SSH_ID_FILE}"
-  network_name: ansible-network
-  subnet_name: ansible-subnet
-  firewall_name: ansible-firewall
+  network_name: ansible-network-${SUFFIX}
+  subnet_name: ansible-subnet-${SUFFIX}
+  firewall_name: ansible-firewall-${SUFFIX}
   ip_cidr_range: 172.16.0.0/28
 
 lint: |
   set -e
   yamllint .
   # skip 503 issue on the molecule genarated code
-  ansible-lint -x 503
+  ansible-lint -x 503 
   flake8
 
 platforms:
-  - name: "ds-centos7-${TRAVIS_BUILD_ID}"
+  - name: "ds-centos7-${SUFFIX}"
     image_family: projects/centos-cloud/global/images/family/centos-7
     machine_type: n1-standard-1
     size_gb: 200
     groups:
       - centos
-  - name: "ds-ubuntu-bionic-${TRAVIS_BUILD_ID}"
+  - name: "ds-ubuntu-bionic-${SUFFIX}"
     image_family: projects/ubuntu-os-cloud/global/images/family/ubuntu-1804-lts
     machine_type: n1-standard-1
     size_gb: 200
     groups:
       - ubuntu
-  - name:  "ds-ubuntu-xenial-${TRAVIS_BUILD_ID}"
+  - name:  "ds-ubuntu-xenial-${SUFFIX}"
     image_family: projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts
     machine_type: n1-standard-1
     size_gb: 200
@@ -60,6 +60,12 @@ platforms:
 
 provisioner:
   name: ansible
+  vars:
+    docker_port: 2376
+    client_cert: ../../files/client.crt
+    client_key: ../../files/client.key
 
 verifier:
   name: ansible
+  options:
+    vvv: true

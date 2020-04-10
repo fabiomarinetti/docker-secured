@@ -4,8 +4,11 @@
 - name: Verify
   hosts: all
   gather_facts: no
+  become: yes
   vars:
-    docker_port: 2375
+    docker_port: "{{ molecule_yml.provisioner.vars.docker_port }}"
+    client_cert: /etc/ssl/certs/client.crt
+    client_key: /etc/ssl/private/client.key
   tasks:
 
   # test package is installed
@@ -37,13 +40,25 @@
     assert:
       that: not port_open.failed
 
-  # test connection is ssl only
-  - name: send curl http request to docker
-    command: "curl http://localhost:{{ docker_port }}"
-    args:
-      warn: no
-    register: curl_output
-    changed_when: curl_output.rc == 0
-  - name: assert request must be in ssl
+  # copy client certificate and key
+  - name: copy client certificate
+    copy:
+      src: "{{ molecule_yml.provisioner.vars.client_cert }}"
+      dest: "{{ client_cert }}"
+
+  - name: copy client key
+    copy:
+      src: "{{ molecule_yml.provisioner.vars.client_key }}"
+      dest: "{{ client_key }}"
+
+  - name: request to docker secure endpoint
+    uri:
+      url: https://localhost:{{ docker_port }}/images/json
+      client_cert: "{{ client_cert }}"
+      client_key: "{{ client_key }}"
+      validate_certs: no
+    register: response
+
+  - name: verify response code
     assert:
-      that: "'HTTPS server' in curl_output.stdout"
+      that: "{{ response.status }} == 200"

@@ -26,7 +26,7 @@
     network: {"selfLink": "{{ network.selfLink }}"}
     allowed:
     - ip_protocol: tcp
-      ports: ['22']
+      ports: ['22', "{{ molecule_yml.provisioner.vars.docker_port }}"]
     target_tags:
       - ansibleinventory
     source_ranges: ['0.0.0.0/0']
