@@ -26,4 +26,4 @@ install:
 script:
   - molecule --version
   - ansible --version
-  - molecule test --scenario-name=${SCENARIO}
+  - ./run_molecule ${SCENARIO}
