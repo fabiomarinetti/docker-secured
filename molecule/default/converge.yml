@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-          #    - name: "Include fmarinetti.docker-secured"
+          #    - name: "Include docker_secured"
           #include_role:
-          #name: "fmarinetti.docker-secured"
+          #name: "docker_secured"
