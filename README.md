@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/fabiomarinetti/fmarinetti.docker-secured.svg?branch=master)](https://travis-ci.com/fabiomarinetti/fmarinetti.docker-secured)
+[![Build Status](https://travis-ci.com/fabiomarinetti/docker-secured.svg?branch=master)](https://travis-ci.com/fabiomarinetti/docker-secured)
 
-fmarinetti.docker-secured
+docker_secured
 =========
 
 This role installs and expose securely the docker APIs
@@ -34,7 +34,7 @@ Client files are in the files directory of role.
 ```
     - hosts: servers
       roles:
-         - fmarinetti.docker-secured
+         - docker_secured
 ```
 Create a secured docker server with certificates taken from vault. In the playbook file **use_vault: true** must be specified. The vault file must be created as:
 ```
@@ -49,12 +49,3 @@ and the command to launch should be:
 ```
 ansible-playbook -i <inventory-file> -e @/path/to/vault <playbook> --vault-password-file <vault-password-file>
 ```
-
-    
-License
--------
-
-BSD
-
-Author Information
-------------------

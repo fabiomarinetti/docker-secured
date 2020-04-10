@@ -1,5 +1,5 @@
 ---
-# handlers file for fmarinetti.docker-secured
+# handlers file for docker_secured
 #
 # reload units when configuration got changed
 - name: reload units
