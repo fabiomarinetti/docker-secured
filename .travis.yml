@@ -26,4 +26,4 @@ install:
 script:
   - molecule --version
   - ansible --version
-  - ./run_molecule ${SCENARIO}
+  - ./run_molecule.sh ${SCENARIO}
